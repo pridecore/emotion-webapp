@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Обери психолога</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f0f4f8;
+      color: #333;
+    }
+
+    .container {
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      display: flex;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-right: 16px;
+      background-color: #ccc;
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .name {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .details {
+      font-size: 14px;
+      line-height: 1.4;
+      color: #555;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .avatar {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .info {
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="list">
+    <!-- Психологи вставляються тут -->
+  </div>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand(); // на повний екран
+
+    const psychologists = [
+      {
+        fullname: "Олена Іванова",
+        photo: "https://example.com/img/ivanova.jpg",
+        price: 1000,
+        city: "Онлайн",
+        formats: "Індивідуально, підліток",
+        login: "ivanova"
+      },
+      {
+        fullname: "Сергій Петренко",
+        photo: "https://example.com/img/petrenko.jpg",
+        price: 900,
+        city: "Онлайн",
+        formats: "Індивідуально, дитина",
+        login: "petrenko"
+      }
+    ];
+
+    const list = document.getElementById('list');
+
+    psychologists.forEach(psy => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      card.onclick = () => {
+        Telegram.WebApp.sendData(JSON.stringify({ login: psy.login }));
+      };
+
+      card.innerHTML = `
+        <img class="avatar" src="${psy.photo}" alt="${psy.fullname}" onerror="this.src='https://via.placeholder.com/72x72?text=Фото';" />
+        <div class="info">
+          <div class="name">${psy.fullname}</div>
+          <div class="details">💵 ${psy.price} грн&nbsp;&nbsp;|&nbsp;&nbsp;📍 ${psy.city}</div>
+          <div class="details">👥 ${psy.formats}</div>
+        </div>
+      `;
+
+      list.appendChild(card);
+    });
+  </script>
+</body>
+</html>
