@@ -78,7 +78,7 @@
 </head>
 <body>
   <div class="psychologist-list" id="psychologist-list">
-    <!-- Карточки згенеруються тут -->
+    Завантаження...
   </div>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -86,45 +86,41 @@
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
 
-    const psychologists = [
-      {
-        fullname: "Олена Іванова",
-        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/1.jpeg",
-        price: 1000,
-        city: "Онлайн",
-        formats: "індивідуально, підлітки",
-        login: "ivanova"
-      },
-      {
-        fullname: "Сергій Петренко",
-        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/2.jpeg",
-        price: 900,
-        city: "Онлайн",
-        formats: "індивідуально, діти",
-        login: "petrenko"
+    async function loadPsychologists() {
+      const listContainer = document.getElementById('psychologist-list');
+      try {
+        const res = await fetch("https://pridecore.github.io/emotion-webapp/data/approved_psychologists.json");
+        const psychologists = await res.json();
+        listContainer.innerHTML = "";
+
+        psychologists.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'psychologist-card';
+          card.onclick = () => {
+            Telegram.WebApp.sendData(JSON.stringify({ login: p.login }));
+          };
+
+          const photoPath = `https://pridecore.github.io/emotion-webapp/Emotion/img/${p.photo.replace(/^.*[\\/]/, '')}`;
+
+          card.innerHTML = `
+            <img src="${photoPath}" alt="${p.fullname}" class="psychologist-card__avatar" />
+            <div class="psychologist-card__info">
+              <div class="psychologist-card__name">${p.fullname}</div>
+              <div class="psychologist-card__detail">💵 ${p.price} грн | 📍 Онлайн</div>
+              <div class="psychologist-card__detail">🧠 ${p.specializations}</div>
+            </div>
+          `;
+
+          listContainer.appendChild(card);
+        });
+
+      } catch (error) {
+        listContainer.innerHTML = "⚠️ Не вдалося завантажити список психологів.";
+        console.error("❌ Fetch error:", error);
       }
-    ];
+    }
 
-    const listContainer = document.getElementById('psychologist-list');
-
-    psychologists.forEach(psychologist => {
-      const card = document.createElement('div');
-      card.className = 'psychologist-card';
-      card.onclick = () => {
-        Telegram.WebApp.sendData(JSON.stringify({ login: psychologist.login }));
-      };
-
-      card.innerHTML = `
-        <img src="${psychologist.photo}" alt="${psychologist.fullname}" class="psychologist-card__avatar" />
-        <div class="psychologist-card__info">
-          <div class="psychologist-card__name">${psychologist.fullname}</div>
-          <div class="psychologist-card__detail">💵 ${psychologist.price} грн | 📍 ${psychologist.city}</div>
-          <div class="psychologist-card__detail">👥 ${psychologist.formats}</div>
-        </div>
-      `;
-
-      listContainer.appendChild(card);
-    });
+    window.addEventListener("DOMContentLoaded", loadPsychologists);
   </script>
 </body>
 </html>
