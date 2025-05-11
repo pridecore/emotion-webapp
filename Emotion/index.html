@@ -4,135 +4,118 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Обери психолога</title>
-  <meta name="robots" content="noindex">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: #f0f4f8;
-      color: #333;
+      background-color: #f2f4f8;
     }
 
-    .container {
-      padding: 16px;
+    .psychologist-list {
       max-width: 600px;
       margin: 0 auto;
+      padding: 20px 16px;
     }
 
-    .card {
+    .psychologist-card {
       display: flex;
-      align-items: flex-start;
-      background: #fff;
+      align-items: center;
+      background-color: #ffffff;
       border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 14px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    .psychologist-card:hover {
+      transform: scale(1.01);
     }
 
-    .avatar {
+    .psychologist-card__avatar {
       width: 72px;
       height: 72px;
       border-radius: 10px;
       object-fit: cover;
       margin-right: 16px;
-      background-color: #ccc;
+      flex-shrink: 0;
     }
 
-    .info {
+    .psychologist-card__info {
       flex: 1;
     }
 
-    .name {
-      font-size: 17px;
+    .psychologist-card__name {
       font-weight: 600;
+      font-size: 18px;
       margin-bottom: 6px;
+      color: #222;
     }
 
-    .details {
+    .psychologist-card__detail {
       font-size: 14px;
-      line-height: 1.4;
-      color: #555;
+      color: #666;
+      margin-bottom: 4px;
     }
 
     @media (max-width: 480px) {
-      .card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+      .psychologist-card__name {
+        font-size: 16px;
       }
-
-      .avatar {
-        margin-right: 0;
-        margin-bottom: 10px;
-      }
-
-      .info {
-        align-items: center;
+      .psychologist-card__detail {
+        font-size: 13px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="list">
-    <!-- Психологи вставляються тут -->
+  <div class="psychologist-list" id="psychologist-list">
+    <!-- Карточки згенеруються тут -->
   </div>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script>
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand(); // на повний екран
-
     const psychologists = [
       {
         fullname: "Олена Іванова",
-        photo: "https://example.com/img/ivanova.jpg",
+        photo: "https://pridecore.github.io/emotion-webapp/img/1.jpg",
         price: 1000,
         city: "Онлайн",
-        formats: "Індивідуально, підліток",
+        formats: "індивідуально, підлітки",
         login: "ivanova"
       },
       {
         fullname: "Сергій Петренко",
-        photo: "https://example.com/img/petrenko.jpg",
+        photo: "https://pridecore.github.io/emotion-webapp/img/2.jpg",
         price: 900,
         city: "Онлайн",
-        formats: "Індивідуально, дитина",
+        formats: "індивідуально, діти",
         login: "petrenko"
       }
+      // Можна додати більше фахівців
     ];
 
-    const list = document.getElementById('list');
+    const listContainer = document.getElementById('psychologist-list');
 
-    psychologists.forEach(psy => {
+    psychologists.forEach(psychologist => {
       const card = document.createElement('div');
-      card.className = 'card';
-
+      card.className = 'psychologist-card';
       card.onclick = () => {
-        Telegram.WebApp.sendData(JSON.stringify({ login: psy.login }));
+        Telegram.WebApp.sendData(JSON.stringify({ login: psychologist.login }));
       };
 
       card.innerHTML = `
-        <img class="avatar" src="${psy.photo}" alt="${psy.fullname}" onerror="this.src='https://via.placeholder.com/72x72?text=Фото';" />
-        <div class="info">
-          <div class="name">${psy.fullname}</div>
-          <div class="details">💵 ${psy.price} грн&nbsp;&nbsp;|&nbsp;&nbsp;📍 ${psy.city}</div>
-          <div class="details">👥 ${psy.formats}</div>
+        <img src="${psychologist.photo}" alt="${psychologist.fullname}" class="psychologist-card__avatar" />
+        <div class="psychologist-card__info">
+          <div class="psychologist-card__name">${psychologist.fullname}</div>
+          <div class="psychologist-card__detail">💵 ${psychologist.price} грн | 📍 ${psychologist.city}</div>
+          <div class="psychologist-card__detail">👥 ${psychologist.formats}</div>
         </div>
       `;
 
-      list.appendChild(card);
+      listContainer.appendChild(card);
     });
   </script>
 </body>
