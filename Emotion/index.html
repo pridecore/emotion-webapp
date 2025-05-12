@@ -64,6 +64,7 @@
             .psychologist-card__name {
                 font-size: 16px;
             }
+
             .psychologist-card__detail {
                 font-size: 13px;
             }
@@ -111,8 +112,13 @@
                 const card = document.createElement("div");
                 card.className = "psychologist-card";
                 card.onclick = () => {
-                    Telegram.WebApp.sendData(JSON.stringify({ login: psy.login }));
-                    Telegram.WebApp.close();
+                    const data = JSON.stringify({ login: psy.login });
+                    console.log("📤 Надсилаю дані:", data);
+                    Telegram.WebApp.sendData(data);
+
+                    setTimeout(() => {
+                        Telegram.WebApp.close();
+                    }, 200); // затримка перед закриттям
                 };
 
                 card.innerHTML = `
