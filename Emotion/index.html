@@ -77,6 +77,8 @@
     <script>
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
+        Telegram.WebApp.sendData(JSON.stringify({ login: psy.login }));
+        setTimeout(() => Telegram.WebApp.close(), 500); // 500 мс — часто достатньо
 
         const urlParams = new URLSearchParams(window.location.search);
         const allowedLogins = urlParams.get("logins")?.split(",") || [];
