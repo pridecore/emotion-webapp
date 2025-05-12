@@ -77,12 +77,10 @@
     <script>
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
-        Telegram.WebApp.sendData(JSON.stringify({ login: psy.login }));
-        setTimeout(() => Telegram.WebApp.close(), 500); // 500 мс — часто достатньо
-
+    
         const urlParams = new URLSearchParams(window.location.search);
         const allowedLogins = urlParams.get("logins")?.split(",") || [];
-
+    
         const psychologists = [
             {
                 fullname: "Олена Іванова",
@@ -101,11 +99,11 @@
                 login: "petrenko"
             }
         ];
-
+    
         const filtered = psychologists.filter(p => allowedLogins.includes(p.login));
         const list = document.getElementById("psychologist-list");
         list.innerHTML = "";
-
+    
         if (filtered.length === 0) {
             list.innerHTML = "<p>Немає фахівців за обраними напрямками.</p>";
         } else {
@@ -116,9 +114,9 @@
                     const data = JSON.stringify({ login: psy.login });
                     console.log("⬆️ Надсилаємо дані у WebApp:", data);
                     Telegram.WebApp.sendData(data);
-                    // Telegram сам закриє WebApp після надсилання
+                    // Telegram сам закриє WebApp без зайвого повідомлення
                 };
-
+    
                 card.innerHTML = `
                     <img src="${psy.photo}" alt="${psy.fullname}" class="psychologist-card__avatar" />
                     <div class="psychologist-card__info">
@@ -127,7 +125,7 @@
                         <div class="psychologist-card__detail">👥 ${psy.formats}</div>
                     </div>
                 `;
-
+    
                 list.appendChild(card);
             });
         }
