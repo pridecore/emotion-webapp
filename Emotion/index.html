@@ -71,12 +71,15 @@
     </style>
 </head>
 <body>
-    <div class="psychologist-list" id="psychologist-list"></div>
+    <div class="psychologist-list" id="psychologist-list">Завантаження...</div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const allowedLogins = urlParams.get("logins")?.split(",") || [];
 
         const psychologists = [
             {
@@ -97,27 +100,33 @@
             }
         ];
 
+        const filtered = psychologists.filter(p => allowedLogins.includes(p.login));
         const list = document.getElementById("psychologist-list");
+        list.innerHTML = "";
 
-        psychologists.forEach((psy) => {
-            const card = document.createElement("div");
-            card.className = "psychologist-card";
-            card.onclick = () => {
-                Telegram.WebApp.sendData(JSON.stringify({ login: psy.login }));
-                Telegram.WebApp.close();
-            };
+        if (filtered.length === 0) {
+            list.innerHTML = "<p>Немає фахівців за обраними напрямками.</p>";
+        } else {
+            filtered.forEach((psy) => {
+                const card = document.createElement("div");
+                card.className = "psychologist-card";
+                card.onclick = () => {
+                    Telegram.WebApp.sendData(JSON.stringify({ login: psy.login }));
+                    Telegram.WebApp.close();
+                };
 
-            card.innerHTML = `
-                <img src="${psy.photo}" alt="${psy.fullname}" class="psychologist-card__avatar" />
-                <div class="psychologist-card__info">
-                    <div class="psychologist-card__name">${psy.fullname}</div>
-                    <div class="psychologist-card__detail">💵 ${psy.price} грн | 📍 ${psy.city}</div>
-                    <div class="psychologist-card__detail">👥 ${psy.formats}</div>
-                </div>
-            `;
+                card.innerHTML = `
+                    <img src="${psy.photo}" alt="${psy.fullname}" class="psychologist-card__avatar" />
+                    <div class="psychologist-card__info">
+                        <div class="psychologist-card__name">${psy.fullname}</div>
+                        <div class="psychologist-card__detail">💵 ${psy.price} грн | 📍 ${psy.city}</div>
+                        <div class="psychologist-card__detail">👥 ${psy.formats}</div>
+                    </div>
+                `;
 
-            list.appendChild(card);
-        });
+                list.appendChild(card);
+            });
+        }
     </script>
 </body>
 </html>
