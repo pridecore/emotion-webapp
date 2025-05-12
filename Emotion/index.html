@@ -113,8 +113,10 @@
                 card.onclick = () => {
                     const data = JSON.stringify({ login: psy.login });
                     console.log("⬆️ Надсилаємо дані у WebApp:", data);
-                    Telegram.WebApp.sendData(data);
-                    // Telegram сам закриє WebApp без зайвого повідомлення
+                
+                    setTimeout(() => {
+                        Telegram.WebApp.sendData(data);
+                    }, 100); // Затримка 100–150 мс допоможе уникнути системного повідомлення
                 };
     
                 card.innerHTML = `
