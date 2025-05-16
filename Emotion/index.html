@@ -13,93 +13,111 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(145deg, #e8ecf1, #ffffff);
-      color: #222;
+      background: linear-gradient(to bottom, #f0f4f8, #ffffff);
+      color: #2c3e50;
+      padding: 0 12px;
     }
 
-    .psychologist-list {
-      max-width: 680px;
+    .container {
+      max-width: 720px;
       margin: 0 auto;
-      padding: 24px 16px;
+      padding-top: 24px;
     }
 
-    .title {
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
       font-size: 22px;
       font-weight: 600;
-      margin-bottom: 24px;
-      text-align: center;
-      color: #333;
+      color: #1a1a1a;
+      margin-bottom: 6px;
     }
 
-    .psychologist-card {
+    .header p {
+      font-size: 14px;
+      color: #555;
+      opacity: 0.8;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      padding: 16px;
       display: flex;
       align-items: center;
-      background-color: #fdfefe;
-      border-radius: 16px;
-      padding: 16px 20px;
       margin-bottom: 20px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
-      transition: all 0.3s ease;
-      border: 1px solid #eef1f6;
       cursor: pointer;
+      transition: all 0.25s ease-in-out;
     }
 
-    .psychologist-card:hover {
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-      transform: translateY(-2px);
+    .card:hover {
+      transform: scale(1.015);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
     }
 
-    .psychologist-card__avatar {
+    .avatar {
       width: 72px;
       height: 72px;
-      border-radius: 14px;
+      border-radius: 50%;
       object-fit: cover;
-      margin-right: 20px;
-      border: 2px solid #e3e7ed;
-      flex-shrink: 0;
+      margin-right: 16px;
+      border: 2px solid #e3e6ec;
     }
 
-    .psychologist-card__info {
+    .info {
       flex: 1;
     }
 
-    .psychologist-card__name {
-      font-weight: 600;
+    .info h2 {
       font-size: 18px;
+      font-weight: 600;
+      margin: 0;
       margin-bottom: 6px;
       color: #1f1f1f;
     }
 
-    .psychologist-card__detail {
+    .info p {
+      margin: 0;
       font-size: 14px;
       color: #666;
-      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 40px 10px;
+      font-size: 16px;
+      color: #888;
     }
 
     @media (max-width: 480px) {
-      .psychologist-card {
-        padding: 12px 16px;
+      .avatar {
+        width: 64px;
+        height: 64px;
       }
 
-      .psychologist-card__name {
+      .info h2 {
         font-size: 16px;
       }
 
-      .psychologist-card__detail {
+      .info p {
         font-size: 13px;
-      }
-
-      .psychologist-card__avatar {
-        width: 64px;
-        height: 64px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="psychologist-list" id="psychologist-list">
-    <div class="title">Обери свого психолога</div>
-    Завантаження...
+  <div class="container">
+    <div class="header">
+      <h1>Обери свого психолога</h1>
+      <p>Знайди того, хто підходить саме тобі</p>
+    </div>
+
+    <div id="psychologist-list">Завантаження...</div>
   </div>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -131,25 +149,26 @@
 
     const filtered = psychologists.filter(p => allowedLogins.includes(p.login));
     const list = document.getElementById("psychologist-list");
-    list.innerHTML = '<div class="title">Обери свого психолога</div>';
+    list.innerHTML = "";
 
     if (filtered.length === 0) {
-      list.innerHTML += "<p>Наразі немає доступних фахівців за цими напрямами.</p>";
+      list.innerHTML = "<div class='no-data'>Немає фахівців за обраними напрямами 😔</div>";
     } else {
-      filtered.forEach((psy) => {
+      filtered.forEach(psy => {
         const card = document.createElement("div");
-        card.className = "psychologist-card";
+        card.className = "card";
         card.onclick = () => {
           const data = JSON.stringify({ login: psy.login });
-          Telegram.WebApp.sendData(data);
+          setTimeout(() => {
+            Telegram.WebApp.sendData(data);
+          }, 150);
         };
 
         card.innerHTML = `
-          <img src="${psy.photo}" alt="${psy.fullname}" class="psychologist-card__avatar" />
-          <div class="psychologist-card__info">
-            <div class="psychologist-card__name">${psy.fullname}</div>
-            <div class="psychologist-card__detail">💵 ${psy.price} грн | 📍 ${psy.city}</div>
-            <div class="psychologist-card__detail">👥 ${psy.formats}</div>
+          <img src="${psy.photo}" alt="${psy.fullname}" class="avatar" />
+          <div class="info">
+            <h2>${psy.fullname}</h2>
+            <p>💵 ${psy.price} грн | 📍 ${psy.city}<br>👥 ${psy.formats}</p>
           </div>
         `;
 
