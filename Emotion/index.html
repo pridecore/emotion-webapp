@@ -11,66 +11,65 @@
         }
 
         body {
+            background:
+                linear-gradient(to right, rgba(187, 187, 187, 0.75), rgba(187, 187, 187, 0.65)),
+                url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80") no-repeat center center / cover;
             font-family: 'Inter', sans-serif;
+            color: #2c2c2c;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(240, 240, 255, 0.85)),
-                url("https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=1920&q=80") no-repeat center center / cover;
-            overflow-x: hidden;
-            position: relative;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 720px;
             margin: 0 auto;
-            padding: 24px 16px;
-            position: relative;
-            z-index: 2;
+            padding: 24px 16px 48px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .header h1 {
-            font-size: 22px;
-            font-weight: 600;
+            font-size: 24px;
+            font-weight: 700;
             color: #1a1a1a;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .header p {
-            font-size: 14px;
+            font-size: 15px;
             color: #555;
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
         .card {
             background-color: #ffffff;
-            border: 1px solid #e1e5ec;
-            border-radius: 10px;
-            box-shadow: 0 0 0 1px #e3e7ee inset;
+            border-radius: 14px;
             padding: 14px 18px;
             display: flex;
             align-items: center;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
         }
 
         .card:hover {
-            transform: scale(1.02);
-            background-color: #f0f8ff;
-            box-shadow: 0 6px 12px rgba(0, 122, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            background-color: #f9fbff;
         }
 
         .avatar {
             width: 72px;
             height: 72px;
-            border-radius: 50%;
+            border-radius: 12px;
             object-fit: cover;
-            margin-right: 16px;
-            border: 2px solid #e3e6ec;
+            margin-right: 18px;
+            border: 1px solid #dcdfe8;
         }
 
         .info {
@@ -80,86 +79,29 @@
         .info h2 {
             font-size: 18px;
             font-weight: 600;
-            margin: 0;
-            margin-bottom: 6px;
-            color: #1f1f1f;
+            margin: 0 0 6px;
+            color: #1e1e1e;
         }
 
         .info p {
             margin: 0;
             font-size: 14px;
-            color: #666;
-            line-height: 1.4;
+            color: #444;
+            line-height: 1.5;
         }
 
         .no-data {
             text-align: center;
             padding: 40px 10px;
             font-size: 16px;
-            color: #888;
-        }
-
-        .bubbles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .bubble {
-            position: absolute;
-            bottom: -150px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: rise 20s infinite ease-in;
-        }
-
-        .bubble:nth-child(1) {
-            width: 40px;
-            height: 40px;
-            left: 10%;
-            animation-duration: 25s;
-        }
-
-        .bubble:nth-child(2) {
-            width: 60px;
-            height: 60px;
-            left: 30%;
-            animation-duration: 20s;
-        }
-
-        .bubble:nth-child(3) {
-            width: 25px;
-            height: 25px;
-            left: 50%;
-            animation-duration: 22s;
-        }
-
-        .bubble:nth-child(4) {
-            width: 80px;
-            height: 80px;
-            left: 70%;
-            animation-duration: 30s;
-        }
-
-        @keyframes rise {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-120vh) scale(1.5);
-                opacity: 0;
-            }
+            color: #777;
         }
 
         @media (max-width: 480px) {
             .avatar {
-                width: 64px;
-                height: 64px;
+                width: 60px;
+                height: 60px;
+                margin-right: 14px;
             }
 
             .info h2 {
@@ -169,20 +111,18 @@
             .info p {
                 font-size: 13px;
             }
+
+            .container {
+                padding: 16px 12px 40px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="bubbles">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-    </div>
     <div class="container">
         <div class="header">
             <h1>Обери свого психолога</h1>
-            <p>Знайди того, хто підходить саме тобі</p>
+            <p>Знайди фахівця, який підходить саме тобі 💙</p>
         </div>
 
         <div id="psychologist-list">Завантаження...</div>
@@ -229,14 +169,14 @@
                     const data = JSON.stringify({ login: psy.login });
                     setTimeout(() => {
                         Telegram.WebApp.sendData(data);
-                    }, 150);
+                    }, 120);
                 };
 
                 card.innerHTML = `
                     <img src="${psy.photo}" alt="${psy.fullname}" class="avatar" />
                     <div class="info">
                         <h2>${psy.fullname}</h2>
-                        <p>💵 ${psy.price} грн | 📍 ${psy.city}<br>👥 ${psy.formats}</p>
+                        <p>💵 ${psy.price} грн&nbsp;&nbsp;|&nbsp;&nbsp;📍 ${psy.city}<br>👥 ${psy.formats}</p>
                     </div>
                 `;
 
