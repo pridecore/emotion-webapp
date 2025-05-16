@@ -1,180 +1,248 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Обери психолога</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Обери психолога</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom, #f0f4f8, #ffffff);
-      color: #2c3e50;
-      padding: 0 12px;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(240, 240, 255, 0.85)),
+                url("https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=1920&q=80") no-repeat center center / cover;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding-top: 24px;
-    }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            position: relative;
+            z-index: 2;
+        }
 
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
 
-    .header h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin-bottom: 6px;
-    }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
 
-    .header p {
-      font-size: 14px;
-      color: #555;
-      opacity: 0.8;
-    }
+        .header p {
+            font-size: 14px;
+            color: #555;
+            opacity: 0.8;
+        }
 
-    .card {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: all 0.25s ease-in-out;
-    }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #e1e5ec;
+            border-radius: 10px;
+            box-shadow: 0 0 0 1px #e3e7ee inset;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            margin-bottom: 16px;
+        }
 
-    .card:hover {
-      transform: scale(1.015);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-    }
+        .card:hover {
+            transform: scale(1.02);
+            background-color: #f0f8ff;
+            box-shadow: 0 6px 12px rgba(0, 122, 255, 0.15);
+        }
 
-    .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 16px;
-      border: 2px solid #e3e6ec;
-    }
+        .avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 16px;
+            border: 2px solid #e3e6ec;
+        }
 
-    .info {
-      flex: 1;
-    }
+        .info {
+            flex: 1;
+        }
 
-    .info h2 {
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0;
-      margin-bottom: 6px;
-      color: #1f1f1f;
-    }
+        .info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            margin-bottom: 6px;
+            color: #1f1f1f;
+        }
 
-    .info p {
-      margin: 0;
-      font-size: 14px;
-      color: #666;
-      line-height: 1.4;
-    }
+        .info p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
 
-    .no-data {
-      text-align: center;
-      padding: 40px 10px;
-      font-size: 16px;
-      color: #888;
-    }
+        .no-data {
+            text-align: center;
+            padding: 40px 10px;
+            font-size: 16px;
+            color: #888;
+        }
 
-    @media (max-width: 480px) {
-      .avatar {
-        width: 64px;
-        height: 64px;
-      }
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
 
-      .info h2 {
-        font-size: 16px;
-      }
+        .bubble {
+            position: absolute;
+            bottom: -150px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: rise 20s infinite ease-in;
+        }
 
-      .info p {
-        font-size: 13px;
-      }
-    }
-  </style>
+        .bubble:nth-child(1) {
+            width: 40px;
+            height: 40px;
+            left: 10%;
+            animation-duration: 25s;
+        }
+
+        .bubble:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 30%;
+            animation-duration: 20s;
+        }
+
+        .bubble:nth-child(3) {
+            width: 25px;
+            height: 25px;
+            left: 50%;
+            animation-duration: 22s;
+        }
+
+        .bubble:nth-child(4) {
+            width: 80px;
+            height: 80px;
+            left: 70%;
+            animation-duration: 30s;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-120vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .avatar {
+                width: 64px;
+                height: 64px;
+            }
+
+            .info h2 {
+                font-size: 16px;
+            }
+
+            .info p {
+                font-size: 13px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Обери свого психолога</h1>
-      <p>Знайди того, хто підходить саме тобі</p>
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>Обери свого психолога</h1>
+            <p>Знайди того, хто підходить саме тобі</p>
+        </div>
+
+        <div id="psychologist-list">Завантаження...</div>
     </div>
 
-    <div id="psychologist-list">Завантаження...</div>
-  </div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
+        const urlParams = new URLSearchParams(window.location.search);
+        const allowedLogins = urlParams.get("logins")?.split(",") || [];
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const allowedLogins = urlParams.get("logins")?.split(",") || [];
+        const psychologists = [
+            {
+                fullname: "Олена Іванова",
+                photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/1.jpeg",
+                price: 1000,
+                city: "Онлайн",
+                formats: "індивідуально, підлітки",
+                login: "ivanova"
+            },
+            {
+                fullname: "Сергій Петренко",
+                photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/2.jpeg",
+                price: 900,
+                city: "Онлайн",
+                formats: "індивідуально, діти",
+                login: "petrenko"
+            }
+        ];
 
-    const psychologists = [
-      {
-        fullname: "Олена Іванова",
-        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/1.jpeg",
-        price: 1000,
-        city: "Онлайн",
-        formats: "індивідуально, підлітки",
-        login: "ivanova"
-      },
-      {
-        fullname: "Сергій Петренко",
-        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/2.jpeg",
-        price: 900,
-        city: "Онлайн",
-        formats: "індивідуально, діти",
-        login: "petrenko"
-      }
-    ];
+        const filtered = psychologists.filter(p => allowedLogins.includes(p.login));
+        const list = document.getElementById("psychologist-list");
+        list.innerHTML = "";
 
-    const filtered = psychologists.filter(p => allowedLogins.includes(p.login));
-    const list = document.getElementById("psychologist-list");
-    list.innerHTML = "";
+        if (filtered.length === 0) {
+            list.innerHTML = "<div class='no-data'>Немає фахівців за обраними напрямами 😔</div>";
+        } else {
+            filtered.forEach(psy => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.onclick = () => {
+                    const data = JSON.stringify({ login: psy.login });
+                    setTimeout(() => {
+                        Telegram.WebApp.sendData(data);
+                    }, 150);
+                };
 
-    if (filtered.length === 0) {
-      list.innerHTML = "<div class='no-data'>Немає фахівців за обраними напрямами 😔</div>";
-    } else {
-      filtered.forEach(psy => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.onclick = () => {
-          const data = JSON.stringify({ login: psy.login });
-          setTimeout(() => {
-            Telegram.WebApp.sendData(data);
-          }, 150);
-        };
+                card.innerHTML = `
+                    <img src="${psy.photo}" alt="${psy.fullname}" class="avatar" />
+                    <div class="info">
+                        <h2>${psy.fullname}</h2>
+                        <p>💵 ${psy.price} грн | 📍 ${psy.city}<br>👥 ${psy.formats}</p>
+                    </div>
+                `;
 
-        card.innerHTML = `
-          <img src="${psy.photo}" alt="${psy.fullname}" class="avatar" />
-          <div class="info">
-            <h2>${psy.fullname}</h2>
-            <p>💵 ${psy.price} грн | 📍 ${psy.city}<br>👥 ${psy.formats}</p>
-          </div>
-        `;
-
-        list.appendChild(card);
-      });
-    }
-  </script>
+                list.appendChild(card);
+            });
+        }
+    </script>
 </body>
 </html>
