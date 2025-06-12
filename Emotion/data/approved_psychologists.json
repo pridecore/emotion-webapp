@@ -18,7 +18,7 @@
       "12:00",
       "15:00"
     ],
-    "login": "KUPTSOVA",
+    "login": "KUPTSOVAAN",
     "password": "kupt123",
     "user_id": 100001
   },
@@ -176,7 +176,7 @@
       "13:00",
       "17:00"
     ],
-    "login": "KUPTSOVA1",
+    "login": "KUPTSOVAOL",
     "password": "kupcovaa",
     "user_id": 100008
   },
@@ -247,7 +247,7 @@
       "09:30",
       "12:30"
     ],
-    "login": "",
+    "login": "TIUTIUNNIKOVA",
     "password": "",
     "user_id": 100011
   },
@@ -269,7 +269,7 @@
       "09:30",
       "12:30"
     ],
-    "login": "",
+    "login": "TRETIAK",
     "password": "",
     "user_id": 100012
   },
@@ -291,7 +291,7 @@
       "09:30",
       "12:30"
     ],
-    "login": "",
+    "login": "KOKOSH",
     "password": "",
     "user_id": 1000013
   }
