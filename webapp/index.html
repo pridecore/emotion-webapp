@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Обери психолога</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(to right, rgba(187, 187, 187, 0.75), rgba(187, 187, 187, 0.65)),
+                  url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80")
+                  no-repeat center center / cover;
+      font-family: 'Inter', sans-serif;
+      color: #2c2c2c;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 15px;
+      color: #555;
+      opacity: 0.85;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      background-color: #f9fbff;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 14px;
+      object-fit: cover;
+      margin-right: 20px;
+      border: 1px solid #dcdfe8;
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .info h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      color: #1e1e1e;
+    }
+
+    .info p {
+      margin: 0;
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 40px 10px;
+      font-size: 16px;
+      color: #777;
+    }
+
+    @media (max-width: 480px) {
+      .avatar {
+        width: 80px;
+        height: 80px;
+        margin-right: 14px;
+      }
+
+      .info h2 {
+        font-size: 16px;
+      }
+
+      .info p {
+        font-size: 13px;
+      }
+
+      .container {
+        padding: 16px 12px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Обери свого психолога</h1>
+      <p>Знайди фахівця, який підходить саме тобі 💙</p>
+    </div>
+
+    <div id="psychologist-list">Завантаження...</div>
+  </div>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const allowedLogins = urlParams.get("logins")?.split(",") || [];
+
+    const psychologists = [
+      {
+        fullname: "Ангеліна Купцова",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/АнКупцова.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "Психологічне консультування підлітків та дорослих",
+        login: "KUPTSOVAAN"
+      },
+      {
+        fullname: "Анастасія Бондаренко",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Бондаренко.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "BONDARENKO"
+      },
+      {
+        fullname: "Валерія Кривобок",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Кривобок.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "KRYVOBOK"
+      },
+      {
+        fullname: "Інна Павлюченко",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Павлюченко.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "PAVLIUCHENKO"
+      },
+      {
+        fullname: "Катерина Капуста",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Капуста.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "KAPUSTA"
+      },
+      {
+        fullname: "Анна Макаровська",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Макаровська.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "MAKAROVSKA"
+      },
+      {
+        fullname: "Оксана Голіцина",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Голіцина.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "HOLITSYNA"
+      },
+      {
+        fullname: "Олена Купцова",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/ОлКупцова.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "KUPTSOVAOL"
+      },
+      {
+        fullname: "Олена Трофименко",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Трофименко.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "TROFYMENKO"
+      },
+      {
+        fullname: "Оксана Ходорковська",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Ходорковська.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "KHODORKOVSKA"
+      },
+      {
+        fullname: "Світлана Тютюннікова",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Тютюннікова.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "TIUTIUNNIKOVA"
+      },
+      {
+        fullname: "Сергій Третяк",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Третяк.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "TRETIAK"
+      },
+      {
+        fullname: "Катерина Кокош",
+        photo: "https://pridecore.github.io/emotion-webapp/Emotion/img/Кокош.jpg",
+        price: 1200,
+        city: "Онлайн",
+        formats: "індивідуально",
+        login: "KOKOSH"
+      }
+    ];
+
+    const filtered = psychologists.filter(p => allowedLogins.includes(p.login));
+    const list = document.getElementById("psychologist-list");
+    list.innerHTML = "";
+
+    if (filtered.length === 0) {
+      list.innerHTML = "<div class='no-data'>Немає фахівців за обраними напрямами 😔</div>";
+    } else {
+      filtered.forEach(psy => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.onclick = () => {
+          const data = JSON.stringify({ login: psy.login });
+          Telegram.WebApp.sendData(data);
+        };
+
+        card.innerHTML = `
+          <img src="${psy.photo}" alt="${psy.fullname}" class="avatar" />
+          <div class="info">
+            <h2>${psy.fullname}</h2>
+            <p>💵 ${psy.price} грн&nbsp;&nbsp;|&nbsp;&nbsp;📍 ${psy.city}<br>👥 ${psy.formats}</p>
+          </div>
+        `;
+
+        list.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
